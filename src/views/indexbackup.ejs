@@ -1,0 +1,41 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <title>Nazario du barrio</title>
+</head>
+
+<body>
+    <header>
+        <h1>La botonera du barrio</h1>
+    </header>
+
+    <% for(let i=0;i<botones.length;i++) { %>
+        <audio src="<%=botones[i].audio%>" controls="" ><%= botones[i].titulo %></audio>
+            <button class='button' onmousedown="sonido()"> </button>
+                    <%= botones[i].titulo %>
+                    <audio id="<%- botones[i].titulo %>" src="<%-botones[i].audio%>"></audio>
+                <script type="text/javascript">
+                    let sound = true;
+
+                    let miAudio = document.getElementById("<%= botones[i].titulo %>");
+
+                    function sonido(){
+                        if(sound){
+                            //document.querySelector(".Musi-Off").src="icono/Si_Music.svg";
+                            miAudio.src="<%-botones[i].audio%>";	
+                            miAudio.volume = 0.7;
+                            miAudio.play();	
+                        }
+                    } 
+                </script>
+        <% } %>
+</body>
+
+</html>

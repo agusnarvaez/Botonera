@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/header-y-footer.css">
+  <link rel="stylesheet" href="./css/register.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <title>Registro</title>
+</head>
+
+<body>
+  <header class="main-header">
+    <a href='/'>Inicio</a><br>
+  </header>
+  <main>
+    <form class="formulario" action="/user/register" method="POST" enctype="multipart/form-data">
+      <input name="fullName" type="text" id="nombreYApellido" placeholder="Nombre y apellido" class="campo" value='<%= locals.oldData && oldData.fullName %>'> <br>
+      <% if(locals.errors && errors.fullName){ %>
+      <p class='feedback'><%= errors.fullName.msg %> </p>
+      <% } %>
+      <input name="email" type="text" id="email" placeholder="E-mail" class="campo" value='<%= locals.oldData && oldData.email %>'><br>
+      <% if(locals.errors && errors.email){ %>
+      <p class='feedback'><%= errors.email.msg %> </p>
+      <% } %><br>
+      <label for="birthday" class="titulo" value='<%= locals.oldData && oldData.birthday %>'>Fecha de nacimiento</label><br>
+      <input name="birthday" type="date" id="birthday" class="campo"><br>
+      <% if(locals.errors && errors.birthday){ %>
+      <p class='feedback'><%= errors.birthday.msg %> </p>
+      <% } %>
+      <input name="address" type="text" id="domicilio" placeholder="Domicilio" class="campo" value='<%= locals.oldData && oldData.address %>'><br>
+      <% if(locals.errors && errors.address){ %>
+      <p class='feedback'><%= errors.address.msg %> </p>
+      <% } %>
+      <div class="fotoPerfil">
+        <label class="titulo" for="fotoPerfil">Foto de perfil</label>
+        <input type="file" name="avatar" id="fotoPerfil" accept=".jpg, .png">
+      </div><br>
+      <% if(locals.errors && errors.avatar){ %>
+      <p class='feedback'><%= errors.avatar.msg %> </p>
+      <% } %>
+      <input name='password' type="password" placeholder="Contraseña" class="campo"><br>
+      <% if(locals.errors && errors.password){ %>
+      <p class='feedback'><%= errors.password.msg %> </p>
+      <% } %>
+      <br>
+      <input name='password' type="password" placeholder="Confirmar contraseña" class="campo"><br>
+      <% if(locals.errors && errors.password){ %>
+      <p class='feedback'><%= errors.password.msg %> </p>
+      <% } %>
+
+      <button class="boton" type="submit">Enviar</button><br>
+      <button class="boton" type="reset">Borrar</button>
+    </form>
+  </main>
+</body>
+
+</html>

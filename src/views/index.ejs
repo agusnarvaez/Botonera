@@ -1,0 +1,26 @@
+<html lang="en">
+<%- include('./partials/head.ejs',{partialHead}) %>
+
+<body>
+  <!-- Incluyo partial header-->
+  <%- include('./partials/header.ejs') %>
+  <main>
+    <section class='buttons'>
+      <% botones.forEach(boton => { %>
+      <div class='button-space'>
+        <button name="button" class='button' id='<%= boton.id %>' value='<%= boton.audio %> '>
+          <h3><%= boton.titulo %></h3>
+          <audio class='audios' id="<%= boton.id %>" src='<%= boton.audio %>'>
+          </audio>
+        </button>
+      </div>
+      <% }) %>
+      </div>
+    </section>
+  </main>
+  <!-- Incluyo partial footer-->
+  <%- include('./partials/footer.ejs') %>
+  <script type="text/javascript" src="/js/button.js"></script>
+</body>
+
+</html>

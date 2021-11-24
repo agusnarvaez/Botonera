@@ -1,0 +1,45 @@
+* {
+  font-family: "Lato", sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+}
+body {
+  background-color: #f8b76b;
+}
+.buttons {
+  display: flex;
+  padding: 1%;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.button-space {
+  width: 90%;
+  margin: 2%;
+  justify-content: center;
+}
+
+.button {
+  width: 100%;
+  padding: 2%;
+  text-align: center;
+  background-color: #f09374;
+  border: none;
+  border-radius: 20px;
+  box-shadow: 3px 3px 0px 2px #808080;
+}
+
+.button h3 {
+  font-size: 2em;
+}
+
+.button-pressed {
+  background-color: #d96a5d;
+  box-shadow: inset 4px 4px #808080;
+}
+@media (min-width: 768px) {
+  .button-space {
+    width: 45%;
+  }
+}

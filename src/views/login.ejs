@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/login.css">
+  <link rel="stylesheet" href="./css/header-y-footer.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <title>Login</title>
+</head>
+
+<body>
+  <header class="main-header">
+    <a href='/'>Inicio</a><br>
+  </header>
+  <main>
+    <form class="formulario" action="/user/login" method="POST">
+      <input type="text" name="fullName" id="nombreUsuari@" placeholder="Nombre de usuario" class="campo <%= locals.errors && errors.fullName ? 'is-invalid' : null %>" value='<%= locals.oldData && oldData.fullName %>'><br>
+      <% if(locals.errors && errors.fullName){ %>
+      <p class='feedback'><%= errors.fullName.msg %> </p>
+      <% } %>
+      <input type=" text" name="email" id="email" placeholder="E-mail" class="campo" value='<%= locals.oldData && oldData.email %>'><br>
+      <% if(locals.errors && errors.email){ %>
+      <p class='feedback'><%= errors.email.msg %> </p>
+      <% } %>
+      <input type="password" name='password' placeholder="Contraseña" class="campo"><br>
+      <% if(locals.errors && errors.password){ %>
+      <p class='feedback'><%= errors.password.msg %> </p>
+      <% } %>
+      <br>
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" name="remember_user">Recordar mi usuario
+      </label>
+      <br>
+      <button class="boton" type="submit">Enviar</button><br>
+    </form>
+    <br>
+    <p>No te registraste? Click <a href='/user/register'>aquí</a></p>
+  </main>
+
+</body>
+
+</html>

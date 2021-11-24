@@ -1,0 +1,30 @@
+{
+  "name": "a-du-barrio",
+  "version": "1.0.0",
+  "description": "Es una botonera de Nazario del barrio",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agusnarvaez/botonera-nazario.git"
+  },
+  "keywords": [
+    "nazario"
+  ],
+  "author": "Agustin Narvaez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agusnarvaez/botonera-nazario/issues"
+  },
+  "homepage": "https://github.com/agusnarvaez/botonera-nazario#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-validator": "^6.13.0",
+    "method-override": "^3.0.0",
+    "multer": "^1.4.3",
+    "nodemon": "^2.0.15"
+  }
+}

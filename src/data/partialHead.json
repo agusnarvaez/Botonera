@@ -1,0 +1,18 @@
+{
+    "index": {
+        "title": "La botonera de nazario",
+        "style": "/css/style.css"
+    },
+    "login": {
+        "title": "Login",
+        "style": "/css/login.css"
+    },
+    "register": {
+        "title": "Registrarse",
+        "style": "/css/register.css"
+    },
+    "profile": {
+        "title": "Perfil",
+        "style": "/css/profile.css"
+    }
+}
