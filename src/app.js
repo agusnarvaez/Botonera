@@ -26,6 +26,10 @@ app.use('/', mainRoutes); //A rutas principales
 app.use('/user', userRoutes); //A rutas principales
 
 // ***Corremos el servidor indicado en la variable host***
-app.listen(host, () => {
+app.listen(process.env.PORT || host, function () {
+    console.log('Servidor corriendo en el puerto 3000');
+})
+
+/* app.listen(host, () => {
     console.log('Servidor corriendo => http://localhost:' + host + '/');
-});
+}); */
