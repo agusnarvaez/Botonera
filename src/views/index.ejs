@@ -8,11 +8,11 @@
     <section class='buttons'>
       <% botones.forEach(boton => { %>
       <div class='button-space'>
-        <button name="button" class='button' id='<%= boton.id %>' value='<%= boton.audio %> '>
+        <div name="button" class='button' id='<%= boton.id %>' value='<%= boton.audio %> '>
           <h3><%= boton.titulo %></h3>
           <audio class='audios' id="<%= boton.id %>" src='<%= boton.audio %>'>
           </audio>
-        </button>
+        </div>
       </div>
       <% }) %>
       </div>
