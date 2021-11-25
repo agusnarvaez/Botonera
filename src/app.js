@@ -1,6 +1,6 @@
 const express = require('express'); // Requerimos Express
 const app = express(); //Generamos app de express
-const host = 3050; //Establezco host a utilizar
+const host = 3000; //Establezco host a utilizar
 app.use(express.urlencoded({ extended: false })); //Middleware global para recibir la info de un formulario
 const path = require('path'); // Requerimos módulo Path
 
@@ -27,7 +27,7 @@ app.use('/user', userRoutes); //A rutas principales
 
 // ***Corremos el servidor indicado en la variable host***
 app.listen(process.env.PORT || host, function () {
-    console.log('Servidor corriendo en el puerto 3000');
+    console.log('Servidor corriendo en el puerto http://localhost:3000');
 })
 
 /* app.listen(host, () => {
