@@ -19,13 +19,13 @@ buttons.forEach(button => {
                     //console.log(titles);
                     let title = titles[button.id];
                     let aux = title.innerText
-                    console.log(title);
+                    //console.log(title);
                     miAudio.volume = 0.7;
                     miAudio.play();
                     button.classList.add('button-pressed');
                     miAudio.addEventListener('play', function () {
                         title.innerText = 'reproduciendo...';
-                        console.log('reproduciendo');
+                        //console.log('reproduciendo');
                     })
 
                     miAudio.addEventListener('ended', function () {
