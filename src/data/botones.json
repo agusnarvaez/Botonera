@@ -10,9 +10,8 @@
         "titulo": "Booob esponja",
     "audio": "/audios/bob-esponja.ogg"},
     {"id":"3",
-        "titulo": "Como va Jorjugonowo",
-    "audio": "/audios/como-va-jorju.ogg"
-    },
+       "titulo": "Vos sos pelotudo?",
+    "audio": "/audios/vos-sos-pelotudo.ogg"},
     {"id":"4",
         "titulo": "De Nazcar",
     "audio": "/audios/de-nazcar.ogg"},
@@ -65,8 +64,5 @@
     "audio": "/audios/soy-boludo.ogg"},
     {"id":"20",
         "titulo": "Vamo che vaaaamo",
-    "audio": "/audios/vamo-che-vamo.ogg"},
-    {"id":"21",
-        "titulo": "Vos sos pelotudo?",
-    "audio": "/audios/vos-sos-pelotudo.ogg"}
+    "audio": "/audios/vamo-che-vamo.ogg"}
 ]
