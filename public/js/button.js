@@ -23,16 +23,17 @@ window.onload = function () {
                         //console.log(title);
                         miAudio.volume = 0.7;
                         miAudio.play();
-                        //button.classList.add('button-pressed');
+                        button.classList.add('button-pressed');
                         //miAudio.addEventListener('play', function () {
-                        //title.innerText = 'reproduciendo...';
+                        title.innerText = 'reproduciendo...';
+                        //console.log('reproduciendo');
                         //})
 
-                        /* miAudio.addEventListener('ended', function () {
+                        miAudio.addEventListener('ended', function () {
                             //console.log('Termino de reproducirse');
                             button.classList.remove('button-pressed');
                             title.innerText = aux;
-                        }) */
+                        })
                     }
                 }
             })
