@@ -20,6 +20,7 @@ main {
   margin: 5%;
   justify-content: center;
   z-index: 3;
+  cursor: pointer;
 }
 
 .button {
