@@ -7,12 +7,13 @@
 }
 
 .title {
-  background-color: #d98e5d;
+  background-color: #1d3557;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1%;
   flex-wrap: wrap;
+  color: #ffff;
 }
 h1 {
   padding: 1%;
