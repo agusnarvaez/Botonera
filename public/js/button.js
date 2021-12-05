@@ -22,7 +22,6 @@ window.onload = function () {
                         let aux = title.innerText
                         //console.log(title);
                         miAudio.volume = 0.7;
-                        miAudio.muted = false;
                         miAudio.play();
                         button.classList.add('button-pressed');
                         //miAudio.addEventListener('play', function () {

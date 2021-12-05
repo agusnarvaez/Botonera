@@ -14,13 +14,13 @@ main {
   padding: 1%;
   flex-wrap: wrap;
   justify-content: space-around;
+  z-index: 3;
 }
 .button-space {
   width: 90%;
   margin: 5%;
   justify-content: center;
   z-index: 3;
-  cursor: pointer;
 }
 
 .button {
@@ -60,13 +60,14 @@ main {
   max-width: 70%;
   width: 70%;
 }
-@media (min-width: 768px) {
+@media (min-width: 600px) {
   .button-space {
     width: 45%;
     z-index: 3;
+    margin: 2%;
+    align-self: center;
   }
   .el-titan {
-    display: block;
     position: absolute;
     bottom: 0;
     right: 0;
