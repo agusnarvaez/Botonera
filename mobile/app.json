@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "La Botonera de Nazario",
+    "slug": "botonera-nazario",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0D0D0D"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.botonera.nazario"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FF3B3B"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.botonera.nazario"
+    },
+    "plugins": [
+      "expo-audio"
+    ]
+  }
+}
