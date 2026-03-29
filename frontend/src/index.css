@@ -1,0 +1,143 @@
+/* ════════════════════════════════════════════════
+   El Boliche del Barrio — Design System
+   Botonera de Nazario
+   ════════════════════════════════════════════════ */
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Colors */
+  --color-bg:          #0D0D0D;
+  --color-surface:     #111111;
+  --color-surface-2:   #161616;
+  --color-border:      #1e1e1e;
+  --color-border-dim:  #141414;
+
+  --color-red:         #FF3B3B;
+  --color-yellow:      #FFDE00;
+  --color-cyan:        #00B4D8;
+  --color-orange:      #FF6B35;
+  --color-purple:      #7B2FBE;
+
+  --color-text:        #FFFFFF;
+  --color-text-muted:  #666666;
+  --color-text-dim:    #333333;
+
+  /* Typography */
+  --font-display:      'Bebas Neue', 'Arial Black', sans-serif;
+  --font-mono:         'DM Mono', 'Courier New', monospace;
+
+  /* Z-index scale */
+  --z-base:     10;
+  --z-overlay:  20;
+  --z-modal:    30;
+  --z-top:      50;
+
+  /* Transitions */
+  --transition-fast:   0.15s ease;
+  --transition-mid:    0.25s ease;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-mono);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  min-height: 100dvh;
+  overflow-x: hidden;
+
+  /* Noise texture overlay */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"),
+                    linear-gradient(to bottom, #0D0D0D 0%, #0a0a0a 100%);
+}
+
+/* ── Grid pattern bg ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Typography ── */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+}
+
+/* ── Scrollbar (Webkit) ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0D0D0D; }
+::-webkit-scrollbar-thumb { background: #222; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #333; }
+
+/* ── Focus visible global ── */
+:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 2px;
+}
+
+/* ── Error boundary ── */
+.error-boundary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  font-family: var(--font-mono);
+  text-align: center;
+}
+
+.error-boundary__title {
+  font-size: 1.5rem;
+  color: var(--color-red);
+}
+
+.error-boundary__msg {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  max-width: 400px;
+}
+
+.error-boundary__retry {
+  padding: 8px 20px;
+  background: transparent;
+  border: 1px solid var(--color-red);
+  color: var(--color-red);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  border-radius: 2px;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.error-boundary__retry:hover {
+  background: var(--color-red);
+  color: #000;
+}

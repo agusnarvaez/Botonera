@@ -1,0 +1,133 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+/* ════════ Header ════════ */
+.header {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #1e1e1e;
+  padding: 32px 20px 28px;
+  background: linear-gradient(180deg, #111 0%, #0D0D0D 100%);
+}
+
+/* Horizontal scan-line effect */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(255,255,255,0.008) 3px,
+    rgba(255,255,255,0.008) 4px
+  );
+  pointer-events: none;
+}
+
+.headerInner {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 1;
+}
+
+/* ── Avatar ── */
+.avatarWrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #FF3B3B;
+  display: block;
+}
+
+.avatarGlow {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,59,59,0.3) 0%, transparent 70%);
+  animation: avatarPulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── Title group ── */
+.titleGroup {
+  flex: 1;
+}
+
+.title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  color: #fff;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  /* Red underline accent */
+  text-shadow:
+    0 0 30px rgba(255,59,59,0.15),
+    2px 2px 0 #330000;
+}
+
+.subtitle {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: #555;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* ── Main content ── */
+.main {
+  flex: 1;
+  padding: 28px 0;
+}
+
+.suspenseFallback {
+  height: 200px;
+}
+
+/* ── Skip link (accessibility) ── */
+.skipLink {
+  position: absolute;
+  top: -100px;
+  left: 12px;
+  padding: 8px 16px;
+  background: #FF3B3B;
+  color: #fff;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  border-radius: 0 0 4px 4px;
+  text-decoration: none;
+  z-index: 100;
+  transition: top 0.15s;
+}
+
+.skipLink:focus {
+  top: 0;
+}
+
+/* ── Animations ── */
+@keyframes avatarPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.05); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avatarGlow { animation: none; }
+}
+
+@media (max-width: 480px) {
+  .header { padding: 20px 16px; }
+  .avatar { width: 60px; height: 60px; }
+}
