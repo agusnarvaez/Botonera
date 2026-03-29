@@ -202,12 +202,33 @@
   to   { transform: translateY(0); }
 }
 
-@media (max-width: 480px) {
-  .speedControls {
-    display: none;
-  }
+@media (max-width: 600px) {
   .bar {
+    flex-wrap: wrap;
     gap: 8px;
+    padding: 10px 14px 12px;
+  }
+
+  /* Primera fila: waveform + info + botones de acción */
+  .waveform { order: 0; }
+  .info      { order: 1; }
+  .stopBtn,
+  .replayBtn { order: 2; }
+  .closeBtn  { order: 3; }
+
+  /* Segunda fila: velocidades a ancho completo */
+  .speedControls {
+    order: 10;
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #1e1e1e;
+  }
+
+  .speedBtn {
+    padding: 5px 10px;
+    font-size: 0.65rem;
   }
 }
 
