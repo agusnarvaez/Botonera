@@ -112,6 +112,19 @@
   display: block;
 }
 
+/* ── Play count badge ── */
+.playCount {
+  position: absolute;
+  bottom: 5px;
+  right: 7px;
+  font-size: 0.55rem;
+  font-family: 'DM Mono', monospace;
+  color: #333;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  pointer-events: none;
+}
+
 /* ── Error icon ── */
 .errorIcon {
   display: flex;

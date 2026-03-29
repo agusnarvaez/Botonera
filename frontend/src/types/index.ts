@@ -30,10 +30,12 @@ export interface SiteSettings {
   }
 }
 
-export type AudioState = 'idle' | 'playing' | 'error'
+export type AudioState = 'idle' | 'playing' | 'ended' | 'error'
 
 export interface AudioPlayerState {
   currentSlug: string | null
+  currentUrl: string | null
+  currentTitle: string | null
   state: AudioState
   error: string | null
 }

@@ -10,6 +10,7 @@ describe('useAudio', () => {
     onerror: (() => void) | null
     currentTime: number
     volume: number
+    playbackRate: number
   }
 
   beforeEach(() => {
@@ -20,6 +21,7 @@ describe('useAudio', () => {
       onerror: null,
       currentTime: 0,
       volume: 1,
+      playbackRate: 1,
     }
     vi.spyOn(window, 'Audio').mockImplementation(() => mockAudio as unknown as HTMLAudioElement)
   })
@@ -31,14 +33,16 @@ describe('useAudio', () => {
     expect(result.current.isPlaying).toBe(false)
   })
 
-  it('play() setea currentSlug y estado playing', async () => {
+  it('play() setea currentSlug, currentTitle y estado playing', async () => {
     const {result} = renderHook(() => useAudio())
 
     await act(async () => {
-      await result.current.play('http://example.com/audio.mp3', 'test-slug')
+      await result.current.play('http://example.com/audio.mp3', 'test-slug', 'Test Title')
     })
 
     expect(result.current.currentSlug).toBe('test-slug')
+    expect(result.current.currentTitle).toBe('Test Title')
+    expect(result.current.currentUrl).toBe('http://example.com/audio.mp3')
     expect(result.current.audioState).toBe('playing')
     expect(result.current.isPlaying).toBe(true)
     expect(mockAudio.play).toHaveBeenCalledOnce()
@@ -48,7 +52,7 @@ describe('useAudio', () => {
     const {result} = renderHook(() => useAudio())
 
     await act(async () => {
-      await result.current.play('http://example.com/audio.mp3', 'test-slug')
+      await result.current.play('http://example.com/audio.mp3', 'test-slug', 'Test Title')
     })
 
     act(() => {
@@ -56,6 +60,7 @@ describe('useAudio', () => {
     })
 
     expect(result.current.currentSlug).toBeNull()
+    expect(result.current.currentTitle).toBeNull()
     expect(result.current.audioState).toBe('idle')
     expect(result.current.isPlaying).toBe(false)
     expect(mockAudio.pause).toHaveBeenCalledOnce()
@@ -65,32 +70,34 @@ describe('useAudio', () => {
     const {result} = renderHook(() => useAudio())
 
     await act(async () => {
-      await result.current.play('http://example.com/audio.mp3', 'test-slug')
+      await result.current.play('http://example.com/audio.mp3', 'test-slug', 'Test Title')
     })
 
     expect(result.current.isPlaying).toBe(true)
 
     act(() => {
-      void result.current.play('http://example.com/audio.mp3', 'test-slug')
+      void result.current.play('http://example.com/audio.mp3', 'test-slug', 'Test Title')
     })
 
     expect(result.current.currentSlug).toBeNull()
     expect(result.current.isPlaying).toBe(false)
   })
 
-  it('onended callback setea estado idle', async () => {
+  it('onended callback setea estado ended (mantiene slug y title)', async () => {
     const {result} = renderHook(() => useAudio())
 
     await act(async () => {
-      await result.current.play('http://example.com/audio.mp3', 'test-slug')
+      await result.current.play('http://example.com/audio.mp3', 'test-slug', 'Test Title')
     })
 
     act(() => {
       mockAudio.onended?.()
     })
 
-    expect(result.current.currentSlug).toBeNull()
-    expect(result.current.audioState).toBe('idle')
+    expect(result.current.currentSlug).toBe('test-slug')
+    expect(result.current.currentTitle).toBe('Test Title')
+    expect(result.current.audioState).toBe('ended')
+    expect(result.current.isPlaying).toBe(false)
   })
 
   it('error en play() setea estado error', async () => {
@@ -98,7 +105,7 @@ describe('useAudio', () => {
     const {result} = renderHook(() => useAudio())
 
     await act(async () => {
-      await result.current.play('http://example.com/audio.mp3', 'bad-slug')
+      await result.current.play('http://example.com/audio.mp3', 'bad-slug', 'Bad Title')
     })
 
     expect(result.current.audioState).toBe('error')
@@ -109,14 +116,29 @@ describe('useAudio', () => {
     const {result} = renderHook(() => useAudio())
 
     await act(async () => {
-      await result.current.play('http://example.com/a.mp3', 'slug-a')
+      await result.current.play('http://example.com/a.mp3', 'slug-a', 'Title A')
     })
 
     await act(async () => {
-      await result.current.play('http://example.com/b.mp3', 'slug-b')
+      await result.current.play('http://example.com/b.mp3', 'slug-b', 'Title B')
     })
 
     expect(result.current.currentSlug).toBe('slug-b')
     expect(mockAudio.pause).toHaveBeenCalledOnce()
+  })
+
+  it('setPlaybackRate actualiza la velocidad', async () => {
+    const {result} = renderHook(() => useAudio())
+
+    await act(async () => {
+      await result.current.play('http://example.com/audio.mp3', 'test-slug', 'Test Title')
+    })
+
+    act(() => {
+      result.current.setPlaybackRate(1.5)
+    })
+
+    expect(result.current.playbackRate).toBe(1.5)
+    expect(mockAudio.playbackRate).toBe(1.5)
   })
 })

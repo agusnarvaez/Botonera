@@ -12,24 +12,46 @@ function unlockAudioContext(): void {
   }
 }
 
+const IDLE_STATE: AudioPlayerState = {
+  currentSlug: null,
+  currentUrl: null,
+  currentTitle: null,
+  state: 'idle',
+  error: null,
+}
+
 export function useAudio() {
   const audioRef = useRef<HTMLAudioElement | null>(null)
-  const [playerState, setPlayerState] = useState<AudioPlayerState>({
-    currentSlug: null,
-    state: 'idle',
-    error: null,
-  })
+  const playbackRateRef = useRef(1)
+  const [playerState, setPlayerState] = useState<AudioPlayerState>(IDLE_STATE)
+  const [playbackRate, setPlaybackRateState] = useState(1)
 
   const stop = useCallback(() => {
     if (audioRef.current) {
       audioRef.current.pause()
       audioRef.current.currentTime = 0
     }
-    setPlayerState({currentSlug: null, state: 'idle', error: null})
+    setPlayerState(IDLE_STATE)
+  }, [])
+
+  // Pausa el audio pero mantiene la barra visible (estado 'ended')
+  const pause = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+    }
+    setPlayerState((prev) => ({...prev, state: 'ended'}))
+  }, [])
+
+  const setPlaybackRate = useCallback((rate: number) => {
+    playbackRateRef.current = rate
+    setPlaybackRateState(rate)
+    if (audioRef.current) {
+      audioRef.current.playbackRate = rate
+    }
   }, [])
 
   const play = useCallback(
-    async (url: string, slug: string) => {
+    async (url: string, slug: string, title: string) => {
       // iOS AudioContext unlock en el primer gesto
       unlockAudioContext()
 
@@ -49,28 +71,29 @@ export function useAudio() {
 
       const audio = new Audio(url)
       audio.volume = 0.85
+      audio.playbackRate = playbackRateRef.current
       audioRef.current = audio
 
-      setPlayerState({currentSlug: slug, state: 'playing', error: null})
+      setPlayerState({currentSlug: slug, currentUrl: url, currentTitle: title, state: 'playing', error: null})
 
       audio.onended = () => {
-        setPlayerState({currentSlug: null, state: 'idle', error: null})
+        setPlayerState((prev) => ({...prev, state: 'ended'}))
       }
 
       audio.onerror = () => {
         const msg = 'No se pudo reproducir el audio. ¿Probaste con otro navegador?'
-        setPlayerState({currentSlug: slug, state: 'error', error: msg})
+        setPlayerState((prev) => ({...prev, state: 'error', error: msg}))
       }
 
       try {
         await audio.play()
       } catch (err) {
         const message = err instanceof Error ? err.message : 'Error desconocido'
-        setPlayerState({
-          currentSlug: slug,
+        setPlayerState((prev) => ({
+          ...prev,
           state: 'error',
           error: `Error al reproducir: ${message}`,
-        })
+        }))
       }
     },
     [playerState.currentSlug, playerState.state, stop],
@@ -79,7 +102,12 @@ export function useAudio() {
   return {
     play,
     stop,
+    pause,
+    setPlaybackRate,
+    playbackRate,
     currentSlug: playerState.currentSlug,
+    currentUrl: playerState.currentUrl,
+    currentTitle: playerState.currentTitle,
     audioState: playerState.state,
     error: playerState.error,
     isPlaying: playerState.state === 'playing',

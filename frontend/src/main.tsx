@@ -14,6 +14,13 @@ const queryClient = new QueryClient({
   },
 })
 
+// Register service worker for PWA installability
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {/* SW registration is best-effort */})
+  })
+}
+
 const rootEl = document.getElementById('root')
 if (!rootEl) throw new Error('No se encontró el elemento #root')
 

@@ -1,0 +1,26 @@
+{
+  "name": "La Botonera de Nazario",
+  "short_name": "Botonera",
+  "description": "Los berretines del Titán — botonera de audios de Nazario del Barrio",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0D0D0D",
+  "theme_color": "#FF3B3B",
+  "icons": [
+    {
+      "src": "/images/partials/nazario.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/partials/nazario.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["entertainment", "music"],
+  "lang": "es"
+}

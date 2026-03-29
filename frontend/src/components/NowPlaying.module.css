@@ -7,8 +7,8 @@
 
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
+  gap: 10px;
+  padding: 10px 16px;
 
   background: rgba(10, 10, 10, 0.95);
   border-top: 2px solid #FF3B3B;
@@ -18,36 +18,89 @@
   animation: slideUp 0.25s ease-out;
 }
 
+.barEnded {
+  border-top-color: #555;
+}
+
+/* ── Info block ── */
+.info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  min-width: 0;
+}
+
 .label {
-  font-size: 0.6rem;
+  font-size: 0.55rem;
   font-weight: 500;
   letter-spacing: 0.15em;
   color: #FF3B3B;
   white-space: nowrap;
-  flex-shrink: 0;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.labelEnded {
+  color: #555;
 }
 
 .title {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+/* ── Speed controls ── */
+.speedControls {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.speedBtn {
+  background: none;
+  border: 1px solid #2a2a2a;
+  color: #555;
+  cursor: pointer;
+  padding: 3px 6px;
+  font-size: 0.6rem;
+  font-family: 'DM Mono', monospace;
+  border-radius: 2px;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.speedBtn:hover {
+  border-color: #444;
+  color: #aaa;
+}
+
+.speedBtnActive {
+  border-color: #FF3B3B;
+  color: #FF3B3B;
+}
+
+/* ── Action buttons ── */
 .stopBtn {
   background: none;
   border: 1px solid #FF3B3B;
   color: #FF3B3B;
   cursor: pointer;
-  padding: 4px 10px;
+  padding: 6px 12px;
   font-size: 0.75rem;
   border-radius: 2px;
   flex-shrink: 0;
   transition: background 0.15s, color 0.15s;
+  min-width: 36px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .stopBtn:hover {
@@ -55,7 +108,53 @@
   color: #000;
 }
 
-.stopBtn:focus-visible {
+.replayBtn {
+  background: none;
+  border: 1px solid #555;
+  color: #aaa;
+  cursor: pointer;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  border-radius: 2px;
+  flex-shrink: 0;
+  transition: border-color 0.15s, color 0.15s;
+  min-width: 36px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.replayBtn:hover {
+  border-color: #FF3B3B;
+  color: #FF3B3B;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  padding: 6px 8px;
+  font-size: 0.75rem;
+  border-radius: 2px;
+  flex-shrink: 0;
+  transition: color 0.15s;
+  min-width: 32px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeBtn:hover {
+  color: #fff;
+}
+
+.stopBtn:focus-visible,
+.replayBtn:focus-visible,
+.closeBtn:focus-visible,
+.speedBtn:focus-visible {
   outline: 2px solid #FFDE00;
   outline-offset: 2px;
 }
@@ -76,6 +175,14 @@
   border-radius: 2px;
   animation: wave 0.7s ease-in-out infinite;
 }
+
+.waveformIdle span {
+  animation: none;
+  background: #333;
+  transform: scaleY(0.4);
+  transform-origin: bottom;
+}
+
 .waveform span:nth-child(1) { animation-delay: 0s;    height: 30%; }
 .waveform span:nth-child(2) { animation-delay: 0.08s; height: 60%; }
 .waveform span:nth-child(3) { animation-delay: 0.16s; height: 100%; }
@@ -95,6 +202,16 @@
   to   { transform: translateY(0); }
 }
 
+@media (max-width: 480px) {
+  .speedControls {
+    display: none;
+  }
+  .bar {
+    gap: 8px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .bar, .waveform span { animation: none; }
+  .bar { animation: none; }
+  .waveform span { animation: none; }
 }

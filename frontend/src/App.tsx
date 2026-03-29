@@ -38,10 +38,21 @@ function Header() {
 }
 
 function NowPlayingBar() {
-  const { stop, currentSlug, isPlaying } = useAudioContext();
-  if (!isPlaying || !currentSlug) return null;
-  const title = currentSlug.replace(/-/g, " ").toUpperCase();
-  return <NowPlaying title={title} onStop={stop} />;
+  const { play, stop, pause, setPlaybackRate, playbackRate, currentSlug, currentUrl, currentTitle, audioState } = useAudioContext();
+  if ((audioState !== 'playing' && audioState !== 'ended') || !currentSlug || !currentUrl || !currentTitle) return null;
+  return (
+    <NowPlaying
+      title={currentTitle}
+      audioUrl={currentUrl}
+      slug={currentSlug}
+      audioState={audioState}
+      playbackRate={playbackRate}
+      onPause={pause}
+      onStop={stop}
+      onReplay={() => play(currentUrl, currentSlug, currentTitle)}
+      onSetPlaybackRate={setPlaybackRate}
+    />
+  );
 }
 
 function AppContent() {

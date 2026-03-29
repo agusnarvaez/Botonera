@@ -5,7 +5,8 @@ interface Props {
   button: AudioButtonType
   isPlaying: boolean
   hasError: boolean
-  onPlay: (url: string, slug: string) => void
+  playCount?: number
+  onPlay: (url: string, slug: string, title: string) => void
 }
 
 // Colores de fallback para botones sin color asignado
@@ -27,14 +28,14 @@ function getButtonColor(button: AudioButtonType): string {
   return FALLBACK_COLORS[hash % FALLBACK_COLORS.length]!
 }
 
-export function AudioButton({button, isPlaying, hasError, onPlay}: Props) {
+export function AudioButton({button, isPlaying, hasError, playCount, onPlay}: Props) {
   const color = getButtonColor(button)
   const slug = button.slug.current
   const audioUrl = button.audioFile?.asset?.url
 
   function handleClick() {
     if (!audioUrl) return
-    onPlay(audioUrl, slug)
+    onPlay(audioUrl, slug, button.title)
   }
 
   function handleKeyDown(e: React.KeyboardEvent) {
@@ -77,6 +78,11 @@ export function AudioButton({button, isPlaying, hasError, onPlay}: Props) {
         <span className={styles.emoji} aria-hidden="true">{button.emoji}</span>
       )}
       <span className={styles.title}>{button.title}</span>
+      {playCount !== undefined && playCount > 0 && (
+        <span className={styles.playCount} aria-label={`Reproducido ${playCount} ${playCount === 1 ? 'vez' : 'veces'}`}>
+          {playCount >= 1000 ? `${Math.floor(playCount / 1000)}k` : playCount}
+        </span>
+      )}
     </button>
   )
 }

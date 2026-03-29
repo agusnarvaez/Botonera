@@ -50,6 +50,7 @@ describe('AudioButton', () => {
     expect(onPlay).toHaveBeenCalledWith(
       'https://cdn.sanity.io/nazario.mp3',
       'nazario-del-barrio',
+      'Nazario del barrio',
     )
   })
 

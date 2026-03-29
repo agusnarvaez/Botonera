@@ -1,16 +1,18 @@
-import {useEffect, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {AudioButton} from '../AudioButton/AudioButton'
 import {SearchBar} from '../SearchBar'
 import {RandomButton} from '../RandomButton'
+import {ShareSheet} from '../ShareSheet/ShareSheet'
 import {useAudioContext} from '../../contexts/AudioContext'
 import {useSanityButtons, useSanityCategories} from '../../hooks/useSanityButtons'
+import {usePlayCounts} from '../../hooks/usePlayCounts'
 import type {AudioButton as AudioButtonType} from '../../types'
 import styles from './Soundboard.module.css'
 
 // Keyboard shortcut: teclas 1-9 reproducen los primeros 9 botones
 function useKeyboardShortcuts(
   buttons: AudioButtonType[],
-  play: (url: string, slug: string) => void,
+  play: (url: string, slug: string, title: string) => void,
 ) {
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
@@ -19,7 +21,7 @@ function useKeyboardShortcuts(
       if (num >= 1 && num <= 9) {
         const btn = buttons[num - 1]
         if (btn?.audioFile?.asset?.url) {
-          play(btn.audioFile.asset.url, btn.slug.current)
+          play(btn.audioFile.asset.url, btn.slug.current, btn.title)
         }
       }
     }
@@ -31,7 +33,7 @@ function useKeyboardShortcuts(
 // Share link: ?s=slug auto-play al cargar
 function useShareAutoPlay(
   buttons: AudioButtonType[],
-  play: (url: string, slug: string) => void,
+  play: (url: string, slug: string, title: string) => void,
 ) {
   const [handled, setHandled] = useState(false)
   useEffect(() => {
@@ -41,7 +43,7 @@ function useShareAutoPlay(
     if (slug) {
       const btn = buttons.find((b) => b.slug.current === slug)
       if (btn?.audioFile?.asset?.url) {
-        play(btn.audioFile.asset.url, btn.slug.current)
+        play(btn.audioFile.asset.url, btn.slug.current, btn.title)
       }
     }
     setHandled(true)
@@ -54,18 +56,46 @@ function ButtonSkeleton() {
   return <div className={styles.skeleton} aria-hidden="true" />
 }
 
+interface ShareTarget {
+  slug: string
+  title: string
+  audioUrl: string
+}
+
 interface SoundboardContentProps {
   buttons: AudioButtonType[]
 }
 
 function SoundboardContent({buttons}: SoundboardContentProps) {
-  const {play, currentSlug, audioState, error} = useAudioContext()
+  const {play: rawPlay, currentSlug, audioState, error} = useAudioContext()
   const {data: sanityCategories} = useSanityCategories()
+  const {counts: playCounts, increment: incrementCount} = usePlayCounts()
+
+  // Wrap play to also increment the local counter
+  const play = useCallback(
+    (url: string, slug: string, title: string) => {
+      incrementCount(slug)
+      return rawPlay(url, slug, title)
+    },
+    [rawPlay, incrementCount],
+  )
+
   const [search, setSearch] = useState('')
   const [activeCategory, setActiveCategory] = useState('')
+  const [openShare, setOpenShare] = useState<ShareTarget | null>(null)
+  const cellRefs = useRef<Map<string, HTMLDivElement>>(new Map())
 
   useKeyboardShortcuts(buttons, play)
   useShareAutoPlay(buttons, play)
+
+  // Auto-scroll to currently playing button
+  useEffect(() => {
+    if (!currentSlug) return
+    const el = cellRefs.current.get(currentSlug)
+    if (el) {
+      el.scrollIntoView({behavior: 'smooth', block: 'nearest'})
+    }
+  }, [currentSlug])
 
   const [favorites, setFavorites] = useState<Set<string>>(() => {
     try {
@@ -121,13 +151,7 @@ function SoundboardContent({buttons}: SoundboardContentProps) {
     const eligible = filteredButtons.filter((b) => b.audioFile?.asset?.url)
     if (eligible.length === 0) return
     const pick = eligible[Math.floor(Math.random() * eligible.length)]!
-    play(pick.audioFile.asset.url, pick.slug.current)
-  }
-
-  function handleShare(slug: string) {
-    const url = new URL(window.location.href)
-    url.searchParams.set('s', slug)
-    navigator.clipboard.writeText(url.toString()).catch(() => {/* ignore */})
+    play(pick.audioFile.asset.url, pick.slug.current, pick.title)
   }
 
   return (
@@ -178,11 +202,16 @@ function SoundboardContent({buttons}: SoundboardContentProps) {
               role="listitem"
               className={styles.cell}
               data-keyboard-hint={idx < 9 ? String(idx + 1) : undefined}
+              ref={(el) => {
+                if (el) cellRefs.current.set(btn.slug.current, el)
+                else cellRefs.current.delete(btn.slug.current)
+              }}
             >
               <AudioButton
                 button={btn}
                 isPlaying={currentSlug === btn.slug.current && audioState === 'playing'}
                 hasError={currentSlug === btn.slug.current && audioState === 'error'}
+                playCount={playCounts[btn.slug.current]}
                 onPlay={play}
               />
               <div className={styles.cellActions}>
@@ -196,9 +225,15 @@ function SoundboardContent({buttons}: SoundboardContentProps) {
                 </button>
                 <button
                   className={styles.shareBtn}
-                  onClick={() => handleShare(btn.slug.current)}
-                  aria-label={`Copiar link de: ${btn.title}`}
-                  title="Copiar link"
+                  onClick={() =>
+                    setOpenShare({
+                      slug: btn.slug.current,
+                      title: btn.title,
+                      audioUrl: btn.audioFile?.asset?.url ?? '',
+                    })
+                  }
+                  aria-label={`Compartir: ${btn.title}`}
+                  title="Compartir"
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
@@ -221,6 +256,16 @@ function SoundboardContent({buttons}: SoundboardContentProps) {
       <p className={styles.keyHint} aria-hidden="true">
         Atajos: teclas 1–9 para las primeras frases
       </p>
+
+      {/* Share sheet — fixed overlay, rendered last so z-index works */}
+      {openShare && (
+        <ShareSheet
+          slug={openShare.slug}
+          title={openShare.title}
+          audioUrl={openShare.audioUrl}
+          onClose={() => setOpenShare(null)}
+        />
+      )}
     </div>
   )
 }
